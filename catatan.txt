@@ -1,0 +1,52 @@
+install laravel:
+composer create-project laravel/laravel lr-cmo
+
+jika masih error:
+sudo chmod -R 777 storage
+sudo chmod -R 777 bootstrap/cache
+php artisan view:clear
+php artisan config:clear
+
+buat tabel migrate untuk sales_data dan prediction_results:
+php artisan make:migration create_sales_data_table
+php artisan make:migration create_prediction_results_table
+
+buat seeder user:
+php artisan make:seeder UserSeeder
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use App\Models\User;
+
+class UserSeeder extends Seeder
+{
+    public function run(): void
+    {
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => Hash::make('password123'), // pastikan Anda menggantinya di production
+        ]);
+    }
+}
+
+
+
+Edit file database/seeders/DatabaseSeeder.php:
+
+public function run(): void
+{
+    $this->call([
+        UserSeeder::class,
+    ]);
+}
+
+jalankan seed:
+php artisan db:seed
+
+
+install library excel:
+composer require maatwebsite/excel
